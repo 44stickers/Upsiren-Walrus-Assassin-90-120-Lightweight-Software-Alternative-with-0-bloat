@@ -24,6 +24,7 @@ The python script will piggyback off of the Cpu Die avg reading it updates to th
 3) Copy paste this "pip install hidapi" without the speech marks and press enter
 4) Open Notepad and copy paste this code
 
+```python
 import hid
 import time
 import sys
@@ -119,6 +120,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+```
 
 
 
