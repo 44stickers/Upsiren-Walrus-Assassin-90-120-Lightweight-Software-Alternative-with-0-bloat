@@ -1,29 +1,51 @@
-# Upsiren Walrus Assassin 90 120 – Lightweight Software Alternative with 0 bloat
-Those of you who own an Upsiren Walrus Assassin 90 / 120 cooler probably know how horrible the software is. I made a fix. Its an ultra light python script that piggy backs off of HwINFO's Cpu temp reading and pushes that number into the usb header the Cooler is plugged in to show it on the display.
-# It takes only 5 minutes to setup and has 0% cpu usage and 20MB ram usage only
+# Upsiren-Walrus-Assassin-90-120-Lightweight-Software-Alternative-with-0-bloat
 
-# WHAT TO DO
-# STEP 1
-FIRST DELETE ALL UPSIREN SOFTWARES YOU HAVE OR ELSE IT WILL CAUSE A CONFLICT
-1) Download HwINFO https://www.hwinfo.com/download/ download the installer for windows
-2) Open HwINFO and go to the general settings tab and make sure your settings look like this
-<img width="696" height="424" alt="image" src="https://github.com/user-attachments/assets/4402b7ce-c05f-490b-b8ed-248c8ef0ca25" />
+A bloat-free Python controller for **Upsiren Walrus Assassin 90 / 120** CPU coolers.
 
-3) Open the sensors tab and click the gear icon in the bottom right
-4) At the top bar go to "HwINFO Gadgets"
-<img width="776" height="644" alt="image" src="https://github.com/user-attachments/assets/ae0fd47e-2901-411f-89a9-da7d0715d77a" />
+The official Upsiren software is heavy, resource-intensive, and prone to bugs. This ultra-lightweight alternative piggybacks directly off **HWiNFO64**'s registry output and pushes live CPU temperature readings to your cooler's display via USB header.
 
-5) Scroll down till you see "Cpu Die (average)" and enable these tick boxes
-<img width="778" height="638" alt="image" src="https://github.com/user-attachments/assets/401e9f13-196c-4c2d-b09b-d0cb756978e4" />
+### 🚀 Highlights
 
-Now HwINFO is configured, those of you who are new to HwINFO, its super light weight and wont cause you lags or stutters
+* **Zero Performance Impact:** ~0% CPU usage and under 20 MB RAM usage combined.
+* **No Bloatware:** Completely bypasses the official software.
+* **Silent Autostart:** Runs hidden in the background on Windows startup without console popups.
 
-# STEP 2
-The python script will piggyback off of the Cpu Die avg reading it updates to the registry and pushes that number with correct formatting to the usb header the fan is plugged in
-1) Download Python 3.12 from the microsoft store
-2) Open command prompt as admin from the windows search box
-3) Copy paste this "pip install hidapi" without the speech marks and press enter
-4) Open Notepad and copy paste this code
+---
+
+## ⚠️ Prerequisite: Uninstall Official Software
+
+> **Important:** Completely uninstall all official Upsiren software before starting. Running both simultaneously will cause USB interface conflicts.
+
+---
+
+## 🛠️ Setup Instructions
+
+### Step 1: Configure HWiNFO64
+
+1. Download and run the Windows installer from [HWiNFO.com](https://www.hwinfo.com/download/).
+2. Open **HWiNFO64**, go to **General Settings**, and enable shared memory/registry reporting:
+3. Open the **Sensors** tab and click the **Gear Icon** ⚙️ in the bottom right corner.
+4. Go to the **HWiNFO Gadgets** tab across the top:
+5. Scroll down to **CPU Die (average)** (or your CPU's main temperature metric) and check the enable boxes to export the data to the registry:
+
+---
+
+### Step 2: Set Up Python & Dependencies
+
+1. Install **Python 3.12** (or newer) from the [Microsoft Store](https://www.google.com/search?q=https://apps.microsoft.com/detail/9ncbd0093247) or [Python.org](https://www.python.org/).
+2. Open **Command Prompt as Administrator** and install `hidapi`:
+```bash
+pip install hidapi
+
+```
+
+
+
+---
+
+### Step 3: Create the Python Controller
+
+1. Open **Notepad** and paste the following code:
 
 ```python
 import hid
@@ -31,7 +53,7 @@ import time
 import sys
 import winreg
 
-# Upsiren Walrus Assassin 90 Identifiers
+# Upsiren Walrus Assassin Identifiers
 VENDOR_ID = 0x5131
 PRODUCT_ID = 0x2007
 
@@ -44,23 +66,20 @@ def get_true_hwinfo_temp():
         # Query how many individual data values are sitting inside the key folder
         _, num_values, _ = winreg.QueryInfoKey(key)
         
-        # First loop: Find the index number associated with your CPU Die Average label
+        # Find index matching the CPU Die Average label
         target_index = None
         for i in range(num_values):
             name, data, _ = winreg.EnumValue(key, i)
-            
-            # If we find a Label name (like Label0, Label1) matching your processor sensor
             if name.startswith("Label") and "cpu die (average)" in str(data).lower():
-                # Extract the tracking index number suffix from the value name string
                 target_index = name.replace("Label", "").strip()
                 break
                 
         if target_index is not None:
             try:
-                # Query the raw numeric value directly using the matching text slot suffix (e.g., ValueRaw0)
+                # Query raw value directly using the matching text slot suffix
                 raw_value, _ = winreg.QueryValueEx(key, f"ValueRaw{target_index}")
                 
-                # Convert the raw text string cleanly to a decimal and round to a whole integer
+                # Convert raw string to rounded integer
                 temp = int(round(float(str(raw_value).strip())))
                 if 20 <= temp <= 95:
                     winreg.CloseKey(key)
@@ -74,8 +93,8 @@ def get_true_hwinfo_temp():
     return None
 
 def main():
-    print("Upsiren Walrus Assassin 90 - Flat Registry Controller")
-    print("-----------------------------------------------------")
+    print("Upsiren Walrus Assassin 90/120 - Flat Registry Controller")
+    print("---------------------------------------------------------")
     
     try:
         device = hid.device()
@@ -92,17 +111,13 @@ def main():
             temp = get_true_hwinfo_temp()
             
             if temp is not None:
-                print(f"Current HWiNFO Registry Reading: {temp} C")
+                print(f"Current HWiNFO Registry Reading: {temp} °C")
                 
-                # THE ARRAY STRUCTURAL FIX:
-                # 1. Initialize a clean 64-byte array of zeroes
+                # 64-byte HID report construction
                 data_packet = [0x00] * 64
-                
-                # 2. Modify index position 1 directly without overwriting the list type
                 data_packet[1] = temp  
-                
-                # 3. Concatenate two true list types together flawlessly
                 final_packet = [0x00] + data_packet
+                
                 try:
                     device.write(final_packet)
                 except:
@@ -113,7 +128,7 @@ def main():
             else:
                 print("Searching for active 'CPU Die (average)' value inside VSB block...")
                 
-            time.sleep(2) # Updates comfortably every 2 seconds
+            time.sleep(2) # Updates every 2 seconds
             
     except KeyboardInterrupt:
         print("\nStopping controller cleanly.")
@@ -121,18 +136,36 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 ```
 
+2. Save the file as **`upsiren_control.py`** (Change *Save as type* to **All Files**).
 
+---
 
-5) Save as "upsiren_control.py" without the speechmarks and select file type as "all" NOT TXT, save this in a file folder or something
-6) Open another notepad and write this script in it but read the instruction i left for you in the script carefully
+### Step 4: Configure Silent Autostart
 
+1. Open a new **Notepad** document and paste the following script:
+
+```vbs
 Set WshShell = CreateObject("WScript.Shell")
-WshShell.Run "python ""THE FILE PATH WHERE YOU PUT YOUR UPSIREN CONTROL PY FILE\upsiren_control.py""", 0, False
+userProfile = WshShell.ExpandEnvironmentStrings("%USERPROFILE%")
 
-7) Save as "silent_start.vbs" in the same place upsiren_control.py is saved
-8) Right click it and make a shortcut
-9) Press Win + R and type shell:startup and move that shortcut you just made in here
-10) Now restart your pc and when you turn it on you will see the temperature on your cooler showing and the python script along with HwINFO running will only take 20MB ram maximum with no performance loss.
-11) Nice
+' Resolves path automatically regardless of user profile directory
+scriptPath = userProfile & "\Downloads\SOFTWARE\upsiren_control.py"
+
+' Run hidden (0) without waiting for exit (False)
+WshShell.Run "python """ & scriptPath & """", 0, False
+
+```
+
+> *(Note: Make sure to adjust `\Downloads\SOFTWARE\` in line 5 if you saved `upsiren_control.py` in a different subfolder under your user directory).*
+
+2. Save this file as **`silent_start.vbs`** in the same folder as `upsiren_control.py`.
+3. Right-click **`silent_start.vbs`** and select **Show more options → Create shortcut**.
+4. Press **Win + R**, type `shell:startup`, and hit **Enter**.
+5. Move the **`silent_start.vbs - Shortcut`** file into the Startup folder.
+
+---
+
+🎉 **You're all set!** On your next reboot, HWiNFO64 and this script will run silently in the background, keeping your cooler display updated continuously.
