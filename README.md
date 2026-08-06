@@ -129,7 +129,7 @@ if __name__ == "__main__":
 6) Open another notepad and write this script in it but read the instruction i left for you in the script carefully
 
 Set WshShell = CreateObject("WScript.Shell")
-WshShell.Run "python ""THE FILE PATH WHERE YOUR FILE IS PUT IT HERE\upsiren_control.py""", 0, False
+WshShell.Run "python ""THE FILE PATH WHERE YOU PUT YOUR UPSIREN CONTROL PY FILE\upsiren_control.py""", 0, False
 
 7) Save as "silent_start.vbs" in the same place upsiren_control.py is saved
 8) Right click it and make a shortcut
