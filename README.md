@@ -6,7 +6,7 @@ Those of you who own an Upsiren Walrus Assassin 90 / 120 cooler probably know ho
 # STEP 1
 FIRST DELETE ALL UPSIREN SOFTWARES YOU HAVE OR ELSE IT WILL CAUSE A CONFLICT
 1) Download HwINFO https://www.hwinfo.com/download/ download the installer for windows
-2) Open HwINFO and go to the general settings tab and enable these settings
+2) Open HwINFO and go to the general settings tab and make sure your settings look like this
 <img width="696" height="424" alt="image" src="https://github.com/user-attachments/assets/4402b7ce-c05f-490b-b8ed-248c8ef0ca25" />
 
 3) Open the sensors tab and click the gear icon in the bottom right
