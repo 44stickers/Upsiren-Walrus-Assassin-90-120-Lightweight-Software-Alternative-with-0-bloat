@@ -15,7 +15,7 @@ FIRST DELETE ALL UPSIREN SOFTWARES YOU HAVE OR ELSE IT WILL CAUSE A CONFLICT
 
 5) Scroll down till you see "Cpu Die (average)" and enable these tick boxes
 <img width="778" height="638" alt="image" src="https://github.com/user-attachments/assets/401e9f13-196c-4c2d-b09b-d0cb756978e4" />
-Now HwINFO is configured, those of you who are new to HwINFO, its super light weight and wont cause you lags or stutters
+ Now HwINFO is configured, those of you who are new to HwINFO, its super light weight and wont cause you lags or stutters
 
 # STEP 2
 The python script will piggyback off of the Cpu Die avg reading it updates to the registry and pushes that number with correct formatting to the usb header the fan is plugged in
