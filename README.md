@@ -130,7 +130,7 @@ if __name__ == "__main__":
 Set WshShell = CreateObject("WScript.Shell")
 WshShell.Run "python ""THE FILE PATH WHERE YOUR FILE IS PUT IT HERE\upsiren_control.py""", 0, False
 
-7) Save as "silent_start.vbs"
+7) Save as "silent_start.vbs" in the same place upsiren_control.py is saved
 8) Right click it and make a shortcut
 9) Press Win + R and type shell:startup and move that shortcut you just made in here
 10) Now restart your pc and when you turn it on you will see the temperature on your cooler showing and the python script along with HwINFO running will only take 20MB ram maximum with no performance loss.
