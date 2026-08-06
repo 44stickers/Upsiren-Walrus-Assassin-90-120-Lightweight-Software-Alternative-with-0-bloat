@@ -23,16 +23,20 @@ The official Upsiren software is heavy, resource-intensive, and prone to bugs. T
 ### Step 1: Configure HWiNFO64
 
 1. Download and run the Windows installer from [HWiNFO.com](https://www.hwinfo.com/download/).
-2. Open **HWiNFO64**, go to **General Settings**, and enable shared memory/registry reporting:
-3. Open the **Sensors** tab and click the **Gear Icon** ⚙️ in the bottom right corner.
-4. Go to the **HWiNFO Gadgets** tab across the top:
-5. Scroll down to **CPU Die (average)** (or your CPU's main temperature metric) and check the enable boxes to export the data to the registry:
+2. Open **HWiNFO64**, go to **General Settings**, and copy these settings:
+   <img width="680" height="400" alt="image" src="https://github.com/user-attachments/assets/88a8d8d9-1bfa-4f6a-ade3-a83a2d07babf" />
 
+4. Open the **Sensors** tab and click the **Gear Icon** ⚙️ in the bottom right corner.
+5. Go to the **HWiNFO Gadgets** tab across the top:
+6. Scroll down to **CPU Die (average)** (or your CPU's main temperature metric) and copy whatever you see here:
+   <img width="776" height="638" alt="image" src="https://github.com/user-attachments/assets/d6a9ce70-a193-4d16-8375-4abe60e7e10d" />
+
+7. You can close out of HwINFO now (it looks like a heavy piece of software if you are new but trust me its very light)
 ---
 
 ### Step 2: Set Up Python & Dependencies
 
-1. Install **Python 3.12** (or newer) from the [Microsoft Store](https://www.google.com/search?q=https://apps.microsoft.com/detail/9ncbd0093247) or [Python.org](https://www.python.org/).
+1. Install **Python 3.12** (or newer) from the Microsoft Store
 2. Open **Command Prompt as Administrator** and install `hidapi`:
 ```bash
 pip install hidapi
